@@ -5,13 +5,22 @@ from sklearn import preprocessing
 import subprocess
 from tqdm import tqdm
 
+# This script generates normalized DNA sequence feature vectors for phage and host genomes
+
+# For each group (phage and host), it:
+# 1. Gathers sequence files (.fna/.fasta),
+# 2. Runs iLearn to extract features,
+# 3. Combines and normalizes features,
+
+# Note: in ilearn set k of Kmer and RCKmer to 3 instead of 2 (ilearn/descnucleotide/Kmer.py and RCKmer.py)
+
+
 # Paths
 phage_folder = './Ordinal_Dataset/phages'
 host_folder = './Ordinal_Dataset/bacteria'
 output_folder = './oridnal_features/dna'
 os.makedirs(output_folder, exist_ok=True)
 
-# in ilearn set k of Kmer and RCKmer to 3 instead of 2 (ilearn/descnucleotide/Kmer.py and RCKmer.py)
 methods = ['Kmer','RCKmer','NAC','DNC','TNC','CKSNAP','PseEIIP']
 
 def run_ilearn(fasta_path, output_csv, method):
@@ -69,15 +78,15 @@ def process_group(group_name, folder):
     combined_features = np.hstack(features_by_method)
     return ids, combined_features
 
-# --- Run for both groups ---
+#Run for both groups
 phage_ids, phage_features = process_group('phage', phage_folder)
 host_ids, host_features = process_group('host', host_folder)
 
-# --- Normalize ---
+#Normalize
 phage_features_norm = preprocessing.MinMaxScaler().fit_transform(phage_features)
 host_features_norm = preprocessing.MinMaxScaler().fit_transform(host_features)
 
-# --- Save ---
+#Save
 phage_outdir = './dna_features_ordinal_data/phage_dna_norm_features/'
 host_outdir = './dna_features_ordinal_data/host_dna_norm_features/'
 os.makedirs(phage_outdir, exist_ok=True)

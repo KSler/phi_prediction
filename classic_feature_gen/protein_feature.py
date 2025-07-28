@@ -1,16 +1,24 @@
 import os
 import numpy as np
-import warnings
 from collections import Counter
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from Bio import SeqIO
 from sklearn import preprocessing
 import pyrodigal
+from tqdm import tqdm
 
-warnings.filterwarnings("ignore")
+
+# This script extracts protein-based features from genome sequences for phage and bacterial hosts.
+
+# 1. Predicts ORFs from nucleotide FASTA files using Pyrodigal.
+# 2. Extracts features per protein:
+#    - Amino Acid Composition,
+#    - Physical-chemical properties,
+#    - Molecular weight.
+# 3. Aggregates protein-level features using summary statistics (mean, max, min, std, var, median).
+# 4. Applies Min-Max normalization across all genomes.
 
 # === Feature extraction functions ===
-
 def AAC_feature(sequence):
     AA = 'ACDEFGHIKLMNPQRSTVWY*'
     count = Counter(sequence)
@@ -56,7 +64,6 @@ def molecular_weight(seq):
     return [analysed_seq.molecular_weight()]
 
 # === ORF prediction using Pyrodigal ===
-
 def extract_protein_orfs_from_fasta(fasta_path, min_aa_length=30):
     with open(fasta_path) as f:
         genome_seq = f.read()
@@ -66,8 +73,6 @@ def extract_protein_orfs_from_fasta(fasta_path, min_aa_length=30):
     return proteins
 
 # === Main processing ===
-from tqdm import tqdm
-
 def process_folder(input_folder, output_folder):
     os.makedirs(output_folder, exist_ok=True)
     fasta_files = [f for f in os.listdir(input_folder) if f.endswith(('.fasta', '.fa', '.fna'))]
