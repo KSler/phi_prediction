@@ -1,6 +1,6 @@
 # Phage-Host Interaction Prediction using Classical and LLM-Derived Features
 
-This notebook performs classification and regression tasks using both classical features and LLM-derived embeddings to predict phage-host interaction strength. Two models are evaluated: **XGBoost** and **Random Forest**.
+This project performs classification and regression tasks using both classical features and LLM-derived embeddings to predict phage-host interaction strength. Two models are evaluated: **XGBoost** and **Random Forest**.
 
 LLM-based features are derived following the approach from **PhageHostLearn**:  
 https://github.com/dimiboeckaerts/PhageHostLearn?tab=readme-ov-file
