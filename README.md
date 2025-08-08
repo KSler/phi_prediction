@@ -9,6 +9,7 @@ Classical features are based on methods from the **PHIAF** study.
 https://github.com/BioMedicalBigDataMiningLab/PHIAF  
 They can be computed using **ILearn** in combination with the `dna_features.py` and `protein_feature.py` scripts included in this notebook.
 
+Python 3.11 was used for the entire Project (except LLM-feature generation)
 
 ---
 
